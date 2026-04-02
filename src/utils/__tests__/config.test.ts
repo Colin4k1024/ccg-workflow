@@ -5,18 +5,22 @@ describe('createDefaultRouting', () => {
   it('returns gemini as frontend primary', () => {
     const routing = createDefaultRouting()
     expect(routing.frontend.primary).toBe('gemini')
-    expect(routing.frontend.models).toEqual(['gemini'])
+    expect(routing.frontend.models).toContain('gemini')
+    expect(routing.frontend.models).toContain('opencode')
   })
 
   it('returns codex as backend primary', () => {
     const routing = createDefaultRouting()
     expect(routing.backend.primary).toBe('codex')
-    expect(routing.backend.models).toEqual(['codex'])
+    expect(routing.backend.models).toContain('codex')
+    expect(routing.backend.models).toContain('opencode')
   })
 
-  it('returns both models for review', () => {
+  it('returns all models for review', () => {
     const routing = createDefaultRouting()
-    expect(routing.review.models).toEqual(['codex', 'gemini'])
+    expect(routing.review.models).toContain('codex')
+    expect(routing.review.models).toContain('gemini')
+    expect(routing.review.models).toContain('opencode')
     expect(routing.review.strategy).toBe('parallel')
   })
 

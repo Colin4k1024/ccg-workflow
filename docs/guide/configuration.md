@@ -4,7 +4,7 @@
 
 ```
 ~/.claude/
-├── commands/ccg/       # 28 个命令模板
+├── commands/ccg/       # 29+ 个命令模板
 ├── agents/ccg/         # 4 个子智能体
 ├── skills/ccg/         # 质量检查 + 多 Agent 协同
 ├── bin/codeagent-wrapper
@@ -12,7 +12,8 @@
     ├── config.toml     # CCG 配置文件
     └── prompts/
         ├── codex/      # 6 个 Codex 角色提示词
-        └── gemini/     # 7 个 Gemini 角色提示词
+        ├── gemini/     # 7 个 Gemini 角色提示词
+        └── opencode/   # 6 个 OpenCode 角色提示词 (v2.2.0+)
 ```
 
 ## 环境变量
@@ -77,3 +78,60 @@ npx ccg-workflow menu  # 选「实用工具」
 **Agent Teams 命令找不到**
 
 在 settings.json 里加 `"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"`。这还是实验特性。
+
+## OpenCode CodexCLI (v2.2.0+)
+
+opencode-codex-orch 是另一种多 Agent 编排方案，可作为 CCG 的后端选择。
+
+### 安装
+
+```bash
+# 通过 npm 安装
+npm install -g opencode-codex-orch
+
+# 或参考官方文档
+# https://github.com/allOwO/opencode-codex-orch
+```
+
+### 配置
+
+opencode 使用 `~/.opencode/config.toml` 配置文件：
+
+```toml
+[providers]
+# 配置你的 API provider (OpenAI, Anthropic, Google, etc.)
+openai.api_key = "sk-..."
+
+[agents]
+sisyphus.model = "anthropic/claude-sonnet-4-5"
+oracle.model = "openai/gpt-5.4"
+
+[categories]
+visual-engineering.model = "google/gemini-3-pro"
+ultrabrain.model = "openai/gpt-5.3-codex"
+quick.model = "anthropic/claude-haiku-4-5"
+```
+
+### 使用方法
+
+```bash
+# Ultrawork 模式（完全自动，推荐）
+/ccg:opencode-exec 实现用户认证功能
+
+# Prometheus 模式（交互式规划）
+# 在 opencode 中按 Tab 激活
+
+# 详细执行流程
+/ccg:opencode-workflow 实现实时协作看板 API
+```
+
+### 与 CCG 原生架构对比
+
+| 特性 | CCG 原生 | OpenCode |
+|------|----------|----------|
+| 编排层 | Claude Code | Sisyphus |
+| 执行层 | Codex + Gemini | 多模型自动路由 |
+| Agent 并行 | Agent Teams (可选) | 5+ 并行 (内置) |
+| 自动化 | 半自动 | 全自动 (ultrawork) |
+
+详细文档请参考 `/ccg:skills` 中的多 Agent 协同技能。

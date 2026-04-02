@@ -2,7 +2,7 @@
 export type SupportedLang = 'zh-CN' | 'en'
 
 // 模型类型
-export type ModelType = 'codex' | 'gemini' | 'claude'
+export type ModelType = 'codex' | 'gemini' | 'claude' | 'opencode'
 
 // 协作模式
 export type CollaborationMode = 'parallel' | 'smart' | 'sequential'
@@ -28,6 +28,7 @@ export interface ModelRouting {
   }
   mode: CollaborationMode
   geminiModel?: string // Gemini 具体型号（默认 gemini-3.1-pro-preview）
+  opencodeModel?: string // OpenCode 具体型号（默认 claude-sonnet-4-5）
 }
 
 // CCG 配置

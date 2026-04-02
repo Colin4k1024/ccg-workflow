@@ -77,17 +77,17 @@ export function createDefaultConfig(options: {
 export function createDefaultRouting(): ModelRouting {
   return {
     frontend: {
-      models: ['gemini'],
+      models: ['gemini', 'opencode'],
       primary: 'gemini',
       strategy: 'parallel',
     },
     backend: {
-      models: ['codex'],
+      models: ['codex', 'opencode'],
       primary: 'codex',
       strategy: 'parallel',
     },
     review: {
-      models: ['codex', 'gemini'],
+      models: ['codex', 'gemini', 'opencode'],
       strategy: 'parallel',
     },
     mode: 'smart',

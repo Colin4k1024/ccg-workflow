@@ -300,6 +300,7 @@ export async function init(options: InitOptions = {}): Promise<void> {
       choices: [
         { name: 'Gemini', value: 'gemini' as ModelType },
         { name: `Codex ${ansis.green(`(${i18n.t('init:model.recommended')})`)}`, value: 'codex' as ModelType },
+        { name: 'OpenCode (多Agent编排)', value: 'opencode' as ModelType },
       ],
       default: existingConfig?.routing?.backend?.primary || 'codex',
     }])
@@ -739,6 +740,7 @@ export async function init(options: InitOptions = {}): Promise<void> {
       const wrapperPerms = [
         'Bash(~/.claude/bin/codeagent-wrapper --backend gemini*)',
         'Bash(~/.claude/bin/codeagent-wrapper --backend codex*)',
+        'Bash(~/.claude/bin/codeagent-wrapper --backend opencode*)',
       ]
       for (const perm of wrapperPerms) {
         if (!settings.permissions.allow.includes(perm))

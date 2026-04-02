@@ -150,3 +150,34 @@ func buildGeminiArgs(cfg *Config, targetArg string) []string {
 
 	return args
 }
+
+type OpencodeBackend struct{}
+
+func (OpencodeBackend) Name() string { return "opencode" }
+func (OpencodeBackend) Command() string {
+	return "opencode"
+}
+func (OpencodeBackend) BuildArgs(cfg *Config, targetArg string) []string {
+	return buildOpencodeArgs(cfg, targetArg)
+}
+
+func buildOpencodeArgs(cfg *Config, targetArg string) []string {
+	if cfg == nil {
+		return nil
+	}
+
+	args := []string{}
+
+	// Opencode uses ultrawork mode for fully autonomous execution
+	// or prometheus mode for interview-based planning
+	if cfg.Mode == "resume" && cfg.SessionID != "" {
+		// Resume previous session
+		args = append(args, "resume", cfg.SessionID, targetArg)
+	} else {
+		// New session with ultrawork (autonomous) or prometheus (planning) mode
+		// Default to ultrawork for backward compatibility
+		args = append(args, "ultrawork", targetArg)
+	}
+
+	return args
+}

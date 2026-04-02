@@ -531,3 +531,75 @@ Co-authored-by: Agent-B"
 ```
 
 ---
+
+## OpenCode CodexCLI 集成 (v2.2.0+)
+
+opencode-codex-orch 是 CCG 支持的另一种多 Agent 编排方案，可通过 `codeagent-wrapper --backend opencode` 调用。
+
+### 与 CCG 原生架构对比
+
+| 特性 | CCG 原生 (Claude Code) | opencode-codex-orch |
+|------|------------------------|---------------------|
+| **编排层** | Claude Code (主对话) | Sisyphus (opencode) |
+| **执行层** | Codex + Gemini (固定) | 多模型自动路由 |
+| **Agent 并行** | Agent Teams (可选) | 5+ 并行 (内置) |
+| **意图分类** | 无 | Intent Gate |
+| **自动化程度** | 半自动 (用户确认) | 全自动 (ultrawork) |
+| **学习积累** | .context 手动 | Pheromone 自动 |
+
+### OpenCode Agent 体系
+
+| Agent | 角色 | 功能 | 推荐模型 |
+|-------|------|------|----------|
+| **Sisyphus** | 主协调器 | 任务分解、调度、汇总 | Claude Opus 4.6 |
+| **Prometheus** | 战略规划 | 面试式提问、详细规划 | Claude Opus 4.6 |
+| **Atlas** | 任务编排 | 执行计划、分配任务 | Claude Sonnet 4.6 |
+| **Oracle** | 架构咨询 | 只读顾问、复杂决策 | GPT-5.4 |
+| **Librarian** | 文档搜索 | 外部库、API 文档 | Gemini 3 Flash |
+| **Explore** | 快速探索 | 代码库 grep | Grok Code Fast 1 |
+
+### Category-Based Routing
+
+opencode 自动根据任务类型路由到合适的模型：
+
+```yaml
+visual-engineering: Gemini 3 Pro  # 前端/UI 任务
+ultrabrain: GPT-5.3 Codex (high)  # 深度代码推理
+quick: Claude Haiku 4.5           # 快速简单任务
+deep: GPT-5.4, Claude Opus 4.6    # 复杂分析
+```
+
+### 使用方法
+
+```bash
+# Ultrawork 模式（完全自动，推荐）
+/ccg:opencode-exec 实现用户认证功能
+
+# Prometheus 模式（交互式规划）
+# 在 opencode 中按 Tab 激活
+
+# 详细执行流程
+/ccg:opencode-workflow 实现实时协作看板 API
+```
+
+### 执行流程
+
+```
+用户输入 → Intent Gate 分类 → Sisyphus 分解
+  ↓
+Atlas 编排 → Prometheus 规划 → Agent 并行执行
+  ↓
+Atlas 验证 → Sisyphus 汇总 → 报告
+```
+
+### 何时选择 OpenCode
+
+| 场景 | 推荐方案 |
+|------|----------|
+| 需要精细控制每步 | `/ccg:workflow` |
+| 需要 Claude Code Agent Teams | `/ccg:team` |
+| 追求完全自动化 | `/ccg:opencode-exec` |
+| 需要多模型协同 | `/ccg:opencode-workflow` |
+| 快速简单任务 | `/ccg:opencode-exec` |
+
+---
